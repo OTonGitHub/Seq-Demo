@@ -21,9 +21,25 @@ public class WeatherForecastController : ControllerBase
 
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
-    {            
+    {
         _logger.LogInformation("_ILogger: Called Get() on WeaterForecastController");
-        
+
+        for (int i = 1; i <= 10; i++)
+        {
+            try
+            {
+                _logger.LogInformation("Current Value of i is {LoopCountValue}", i);
+                if (i == 5)
+                {
+                    throw new Exception("User Prone Testing Exception");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in Get() on WeatherForecastController");
+            }
+        }
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

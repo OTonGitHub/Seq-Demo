@@ -1,13 +1,33 @@
+using API.LogEventEnrichers;
 using Serilog;
+
+// Log.Logger = new LoggerConfiguration()
+//     .ReadFrom.Configuration(
+//         new ConfigurationBuilder()
+//             .SetBasePath(Directory.GetCurrentDirectory())
+//             .AddJsonFile("appsettings.json")
+//             .Build()
+//     )
+//     .CreateLogger();
+
+
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.Seq("http://192.168.100.115:5341")
-    .WriteTo.File("logs/Serilog-FileSink.json", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()
+    .WriteTo.File(
+        "logs/Serilog-FileSink.json",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [LC:{Level:u3}/UC:{Level:w3}] {Message:lj} {NewLine} {Properties:j}{NewLine}{Exception}"
+    )
+    .Enrich.With(new ThreadIDEnricher())
+        .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+        .Enrich.WithProperty("Version", "6.9.6")
+            .WriteTo.Seq("http://192.168.100.115:5341")
     .CreateLogger();
+
 
 Serilog.Debugging.SelfLog.Enable(Console.Error);
 
-var builder = WebApplication.CreateBuilder(args);  
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Host.UseSerilog();
