@@ -1,16 +1,18 @@
 using API.LogEventEnrichers;
 using Serilog;
 
-// Log.Logger = new LoggerConfiguration()
-//     .ReadFrom.Configuration(
-//         new ConfigurationBuilder()
-//             .SetBasePath(Directory.GetCurrentDirectory())
-//             .AddJsonFile("appsettings.json")
-//             .Build()
-//     )
-//     .CreateLogger();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(
+        new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true) // props: path, reloadOnChange
+            /* reload if below configuration changes (,true) */
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+            .Build()
+    )
+    .CreateLogger();
 
-
+/* 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.File(
@@ -23,7 +25,7 @@ Log.Logger = new LoggerConfiguration()
         .Enrich.WithProperty("Version", "6.9.6")
             .WriteTo.Seq("http://192.168.100.115:5341")
     .CreateLogger();
-
+*/
 
 Serilog.Debugging.SelfLog.Enable(Console.Error);
 
