@@ -18,15 +18,15 @@
 
 ## .NET Commands
 
-> dotnet new sln
+`dotnet new sln`
 
-> dotnet new webapi
+`dotnet new webapi`
 
-> dotnet add reference from project to sln
+`dotnet add reference from project to sln`
 
-> install nuget packages
+`install nuget packages`
 
-> dotnet run --project API --launch-profile "https"
+`dotnet run --project API --launch-profile "https"`
 
 ## Setting Up
 
@@ -63,7 +63,11 @@ Log.Logger = new LoggerConfiguration()
 */
 ```
 
+<br/>
+
 > And then Appsettings.json
+
+<br />
 
 ```
  "Serilog": {
@@ -117,7 +121,9 @@ Read source code for anything that is not covered here.
 FOR ADDITIONIONAL INFORMATION: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
 
 `snap list`
+
 `sudo snap remove docker`
+
 `sudo apt update && apt upgrade`
 
 > install a few prerequisite packages which let apt use packages over HTTPS:
@@ -157,7 +163,9 @@ FOR ADDITIONIONAL INFORMATION: https://www.digitalocean.com/community/tutorials/
 
 > reset the shell for user (or just log out and log in)
 
-`su - ${USER}` > `groups`
+`su - ${USER}`
+
+`groups`
 
 - CHECK INFO ON ALL USERS
 
@@ -177,7 +185,11 @@ FOR ADDITIONIONAL INFORMATION: https://www.digitalocean.com/community/tutorials/
 
 `docker volume list`
 
+> create and store hashed password in shell before starting container, or be reused in case restarts
+
 `PH=$(echo 'Welcome@123' | sudo docker run --rm -i datalust/seq config hash)`
+
+> if curious enough to see the hashed pass:
 
 `echo $PH`
 
